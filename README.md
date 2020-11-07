@@ -1,2 +1,2 @@
-# fs2db
-file to db insertion. currently supports JSON, CSV, Parquet, Excel
+# mock
+fake data generation tool. currently supports JSON, CSV, Parquet, Excel
