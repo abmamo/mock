@@ -1,0 +1,5 @@
+Faker
+sqlalchemy
+pandas
+fastparquet
+pyarrow
