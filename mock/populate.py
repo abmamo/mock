@@ -1,3 +1,4 @@
+from mock import logger
 # data generator class
 from mock.generate import Generator
 # sqlalchemy orm
@@ -5,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 # os
 import os
+
 # get base dir
 base_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -43,6 +45,7 @@ class SQLite:
         
 class FileStorage:
     def __init__(self, data_types=['name', 'job', 'address', 'currency', 'profile'], data_size=10000, dir_name="data", dir_path=None, file_types=["csv", "json", "parquet"]):
+        logger.info("file storage init")
         # data generator
         self.generator = Generator(types=data_types, data_size=data_size)
         # file output type
@@ -60,7 +63,8 @@ class FileStorage:
         else:
             self.data_dir = dir_path
 
-    def store(self):
+    def store(self, data_dir):
+        logger.info("storing to: %s" % data_dir)
         # generate data (dict of type [string]list where list is list of dfs
         # for each data type specified)
         data = self.generator.convert(to="f")
@@ -70,7 +74,7 @@ class FileStorage:
                 # get df
                 df = data[data_type]
                 # generate filename
-                filename = os.path.join(self.data_dir, data_type + "." +  file_type)
+                filename = os.path.join(data_dir, data_type + "." +  file_type)
                 if file_type == "csv":
                     # save df
                     df.to_csv(filename)

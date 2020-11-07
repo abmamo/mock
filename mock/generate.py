@@ -1,3 +1,4 @@
+from mock import logger
 from faker import Faker
 import os
 # pandas for data conversion
@@ -25,6 +26,7 @@ class Generator:
         self.models = models
     
     def generate(self):
+        logger.info("generating")
         # for each domain type given
         for data_type in self.types:
             # init empty list to store generated domain data
