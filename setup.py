@@ -4,7 +4,7 @@ setup(
       name='mock',
       version='0.0.1',
       description='generate fake data',
-      url='http://github.com/abmamo/fs2db',
+      url='http://github.com/abmamo/mock',
       author='Abenezer Mamo',
       author_email='contact@abmamo.com',
       license='MIT',
