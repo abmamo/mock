@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
       name='mock',
-      version='0.0.1',
+      version='0.0.2',
       description='generate fake data',
       url='http://github.com/abmamo/mock',
       author='Abenezer Mamo',
