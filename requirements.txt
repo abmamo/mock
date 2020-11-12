@@ -1,5 +1,6 @@
 Faker
 sqlalchemy
 pandas
-fastparquet
 pyarrow
+xlrd
+tqdm

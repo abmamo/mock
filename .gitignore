@@ -1,5 +1,7 @@
 # custom places to ignore
 *.sh
+data/
+main.py
 sqlpad/
 mysql/
 postgres/

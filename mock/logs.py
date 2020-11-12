@@ -19,7 +19,7 @@ def setup_logging(logger, std_level=logging.INFO, info_level=logging.INFO, error
     current_path = pathlib.Path(__file__).parent.absolute()
     # define formatter
     formatter = logging.Formatter(
-        "[%(asctime)s] - %(name)-25s %(levelname)-10s %(funcName)s:%(lineno)-18s   %(message)s"
+        "[%(asctime)s] - [%(name)s] - [%(levelname)s] - [%(funcName)s:%(lineno)s] - [%(message)s]"
     )
     # define stream handler
     std_handler = logging.StreamHandler()

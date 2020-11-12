@@ -119,13 +119,17 @@ class FileStorage:
                 # generate filename
                 filename = os.path.join(data_dir, data_type + "." + file_type)
                 if file_type == "csv":
-                    # save df
+                    # save df to csv
                     df.to_csv(filename)
                 elif file_type == "json":
-                    # save df
+                    # save df to json
                     df.to_json(filename)
                 elif file_type == "parquet":
+                    # save df to parquet
                     df.to_parquet(filename)
+                elif file_type == "excel":
+                    # save df to excel
+                    df.to_excel(filename)
                 else:
                     # log
                     logger.error("invalid file type: %s" % file_type)
