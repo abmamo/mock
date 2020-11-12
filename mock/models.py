@@ -1,7 +1,9 @@
-from mock import logger
+# orm
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
+# init base class
 Base = declarative_base()
+
 
 class Person(Base):
     __tablename__ = 'persons'
@@ -10,7 +12,8 @@ class Person(Base):
 
     def __init__(self, name):
         self.name = name
-    
+
+
 class Job(Base):
     __tablename__ = 'jobs'
     id = Column(Integer, primary_key=True)
@@ -19,6 +22,7 @@ class Job(Base):
     def __init__(self, name):
         self.name = name
 
+
 class Address(Base):
     __tablename__ = 'addresses'
     id = Column(Integer, primary_key=True)
@@ -26,6 +30,7 @@ class Address(Base):
 
     def __init__(self, name):
         self.name = name
+
 
 class Currency(Base):
     __tablename__ = 'currencies'
@@ -36,6 +41,7 @@ class Currency(Base):
     def __init__(self, symbol, name):
         self.symbol = symbol
         self.name = name
+
 
 class Profile(Base):
     __tablename__ = 'profiles'

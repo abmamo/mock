@@ -1,20 +1,35 @@
+# logger
 from mock import logger
+# faker
 from faker import Faker
-import os
-# pandas for data conversion
+# pandas
 import pandas as pd
-# import db models
+# db models
 import mock.models as models
-# generate faker
+# tqdm
+from tqdm import tqdm
+# sys
+import sys
+# init faker
 faker = Faker()
 
+
 class Generator:
+    """
+        use faker to generate real-looking random data. the generated data can be names, jobs
+        address, currencies, and profiles. the generated data can be a list of SQLAlchemy
+        object (to store in a db) or a dataframe (to store to a file)
+
+        init params:
+            - types: list of data domains (limited to name, job, address, currency, profile)
+            - data_size: size of data generated
+    """
     def __init__(self, types=['name', 'job', 'address', 'currency', 'profile'], data_size=10000):
-        # domains
+        # data domains
         self.types = types
         # num data items
         self.data_size = data_size
-        # generated data in dict format 
+        # generated data in dict format
         # each type in self.type will have one
         self.all_data = {}
         # converted version of generated data above
@@ -24,15 +39,25 @@ class Generator:
         self.converted_data_df = {}
         # db models
         self.models = models
-    
+
     def generate(self):
-        logger.info("generating")
+        """
+            generate mock data
+
+            params:
+                - none
+            returns:
+                - all_data: dict containing all generated data of the format [type]data
+                            where type in self.types
+        """
         # for each domain type given
         for data_type in self.types:
+            # log
+            logger.info("generating type: %s" % data_type)
             # init empty list to store generated domain data
             type_data = []
             # for given data size
-            for _ in range(self.data_size):
+            for _ in tqdm(range(self.data_size)):
                 # use faker to generate fake dicts & append
                 if data_type == 'name':
                     type_data.append(faker.name())
@@ -48,13 +73,24 @@ class Generator:
                 elif data_type == 'profile':
                     type_data.append(faker.simple_profile())
                 else:
-                    print("invalid type: %s" % data_type)
-            # add domain data to all data 
+                    # log
+                    logger.error("invalid type: %s" % data_type)
+                    # exit
+                    sys.exit()
+            # add domain data to all data
             self.all_data[data_type] = type_data
         # return generated data
         return self.all_data
-    
+
     def convert(self, to="db"):
+        """
+            convert generated data to appropriate format
+
+            params:
+                - to: destination (either "db" or "f")
+            returns:
+                - converted data
+        """
         # if data hasn't been generated
         if not self.all_data:
             # generate first
@@ -63,6 +99,8 @@ class Generator:
         if to == "db":
             # for each domain type in all data
             for data_type in self.all_data:
+                # log
+                logger.info("converting type: %s" % data_type)
                 # create associated sqlalchemy class
                 # definition in models.py
                 if data_type == "name":
@@ -111,6 +149,8 @@ class Generator:
         elif to == "f":
             # for each domain
             for data_type in self.all_data:
+                # log
+                logger.info("converting type: %s" % data_type)
                 # if it is a list we won't have keys to use as column names
                 if isinstance(self.all_data[data_type][0], str):
                     # create df
@@ -119,7 +159,11 @@ class Generator:
                 elif isinstance(self.all_data[data_type][0], dict):
                     df = pd.DataFrame.from_dict(self.all_data[data_type])
                 else:
-                    print("invalid data type: %s" % data_type)
+                    # log
+                    logger.error("invalid data type: %s" % data_type)
+                    # exit
+                    sys.exit()
                 # add dataframe to converted data
                 self.converted_data_df[data_type] = df
+            # return converted data
             return self.converted_data_df

@@ -1,14 +1,21 @@
 import os
-import json
 import logging.config
-from logging.config import fileConfig
 import pathlib
+
 
 def setup_logging(logger, std_level=logging.INFO, info_level=logging.INFO, error_level=logging.ERROR):
     """
-        setup logging configuration
+        configure logger
+
+        params:
+            - logger: logging.Logger object
+            - std_level: logging level for std out
+            - info_level: logging level for info.log
+            - error_level: logging level for error.log
+        returns:
+            - logger: configured logger object
     """
-    # get dir path
+    # get the current file's directory
     current_path = pathlib.Path(__file__).parent.absolute()
     # define formatter
     formatter = logging.Formatter(
