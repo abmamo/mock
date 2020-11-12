@@ -3,4 +3,6 @@ sqlalchemy
 pandas
 pyarrow
 xlrd
+openpyxl
 tqdm
+pytest

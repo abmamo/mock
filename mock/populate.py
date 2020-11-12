@@ -127,7 +127,7 @@ class FileStorage:
                 elif file_type == "parquet":
                     # save df to parquet
                     df.to_parquet(filename)
-                elif file_type == "excel":
+                elif file_type == "xlsx":
                     # save df to excel
                     df.to_excel(filename)
                 else:
