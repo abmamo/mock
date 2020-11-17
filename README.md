@@ -34,4 +34,4 @@ import logging
 from mock import logger as mock_logger
 mock_logger.setLevel(logging.INFO)
 ```
-before importing generator classes (SQLite and FileStorage)
+before importing generator classes (SQLiteGenerator and FileGenerator)
