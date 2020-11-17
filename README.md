@@ -14,15 +14,15 @@ install package
 ```
 to generate SQLite data
 ```
-  from mock.populate import SQLite
+  from mock import SQLiteGenerator
   # init sqlite generator
-  sqlite_generator = SQLite(data_size=10, db_name="test.db")
+  sqlite_generator = SQLiteGenerator(data_size=10, db_name="mock.db")
   # store data to dir
   sqlite_generator.store(data_dir="<some directory to save data to>")
 ```
 to generate files
 ```
-  from mock.populate import FileStorage
+  from mock import FileGenerator
   # init file generator
   file_generator = FileStorage(data_size=10, file_types=["csv", "json"], data_types=["name", "job", "profile"])
   # store data to dir

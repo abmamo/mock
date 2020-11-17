@@ -1,7 +1,8 @@
-# orm
+# sqlalchemy declarative base
 from sqlalchemy.ext.declarative import declarative_base
+# sqlalchemy column types
 from sqlalchemy import Column, Integer, String, DateTime
-# init base class
+# init sqlalchemy declarative base
 Base = declarative_base()
 
 
