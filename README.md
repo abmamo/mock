@@ -24,7 +24,7 @@ to generate files
 ```
   from mock import FileGenerator
   # init file generator
-  file_generator = FileStorage(data_size=10, file_types=["csv", "json"], data_types=["name", "job", "profile"])
+  file_generator = FileGenerator(data_size=10, file_types=["csv", "json"], data_types=["name", "job", "profile"])
   # store data to dir
   file_generator.store(data_dir="<some directory to save data to>")
 ```
