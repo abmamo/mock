@@ -27,7 +27,7 @@ setup(
           "pandas==1.1.4",
           "pyarrow==2.0.0",
           "xlrd==2.0.1",
-          "openpyxl==3.0.5"
+          "openpyxl==3.0.5",
           "tqdm==4.55.0",
           "pytest==6.1.2",
           "pytest-cov==2.10.1"],
