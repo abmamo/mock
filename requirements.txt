@@ -12,5 +12,5 @@ openpyxl
 # progress par
 tqdm==4.55.0
 # testing
-pytest==6.1.2
+pytest==6.2.1
 pytest-cov==2.10.1

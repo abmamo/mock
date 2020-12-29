@@ -29,7 +29,7 @@ setup(
           "xlrd==2.0.1",
           "openpyxl==3.0.5",
           "tqdm==4.55.0",
-          "pytest==6.1.2",
+          "pytest==6.2.1",
           "pytest-cov==2.10.1"],
       zip_safe=False
 )
