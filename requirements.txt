@@ -7,10 +7,10 @@ pandas==1.1.4
 # parquet
 pyarrow==2.0.0
 # excel
-xlrd==1.2.0
+xlrd==2.0.1
 openpyxl==3.0.5
 # progress par
-tqdm==4.51.0
+tqdm==4.55.0
 # testing
 pytest==6.1.2
 pytest-cov==2.10.1
