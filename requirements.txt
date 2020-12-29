@@ -6,3 +6,4 @@ xlrd
 openpyxl
 tqdm
 pytest
+pytest-cov
