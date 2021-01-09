@@ -44,7 +44,7 @@ def test_files(test_data_dir):
     # import generator
     from mock import FileGenerator
     # init params
-    file_types = ["csv", "json", "xlsx", "parquet"]
+    file_types = ["csv", "json", "xls", "parquet"]
     data_types = ["name", "job", "profile", "currency", "address"]
     # init file generator
     file_generator = FileGenerator(

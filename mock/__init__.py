@@ -99,7 +99,7 @@ class FileGenerator:
             # data dir path
             dir_path=None,
             # file types to generate
-            file_types=["csv", "json", "parquet", "xlsx"]):
+            file_types=["csv", "json", "parquet", "xls"]):
         # init data generator
         self.generator = Generator(types=data_types, data_size=data_size)
         # file types to generate
@@ -159,7 +159,7 @@ class FileGenerator:
                     # save df to parquet
                     df.to_parquet(filename)
                 # excel
-                elif file_type == "xlsx":
+                elif file_type == "xls":
                     # save df to excel
                     df.to_excel(filename)
                 else:
