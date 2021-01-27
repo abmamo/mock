@@ -6,8 +6,10 @@ import os
 from os import path
 # config from .cfg file
 from logging.config import fileConfig
+# log dir (same as wherever this file is)
+log_dir = path.dirname(path.abspath(__file__))
 # get logging config path (same dir as this file)
-logging_config_path = path.join(path.dirname(path.abspath(__file__)), 'logging.cfg')
+logging_config_path = path.join(log_dir, 'logging.cfg')
 # configure logging from file
 fileConfig(logging_config_path)
 # suppress logs from faker

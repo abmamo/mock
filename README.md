@@ -36,6 +36,8 @@ to generate files
   file_generator.store()
   # store data in specific dir
   # file_generator.store(data_dir="<some directory to save data to>")
+  # generate files with specific name
+  # file_generator.store(file_name="<some file name to save each file type with>)
 ```
 ### Logging
 by default logging level is set to `WARNING` to change this do
