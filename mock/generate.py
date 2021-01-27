@@ -6,8 +6,6 @@ from faker import Faker
 import pandas as pd
 # db models (for SQLite)
 import mock.models as models
-# tqdm (for progress)
-from tqdm import tqdm
 # sys
 import sys
 # init faker
@@ -30,10 +28,20 @@ class Generator:
     """
     def __init__(
             self,
-            types=['name', 'job', 'address', 'currency', 'profile'],
+            data_types=None,
             data_size=10000):
-        # data types/domains
-        self.types = types
+        # supported data types
+        self.supported_data_types = ['name', 'job', 'address', 'currency', 'profile']
+        # if types not specified use default
+        if data_types is None:
+            data_types = self.supported_data_types
+        # check data types are valid
+        if not all(data_type in self.supported_data_types for data_type in data_types):
+            # raise error
+            raise ValueError("invalid value: data_types. mock only supports: %s" % str(self.supported_data_types))
+        else:
+            # data types/domains
+            self.data_types = data_types
         # size of data generated
         self.data_size = data_size
         # generated data in dict format
@@ -57,18 +65,18 @@ class Generator:
             returns:
                 - all_data: dict containing all generated data
                             in the format [type]data where type
-                            in self.types
+                            in self.data_types
                             i.e. all_data = {"name": name_dicts}
         """
         # for each data type/domain specified
-        for data_type in self.types:
+        for data_type in self.data_types:
             # log
             logger.info("generating type: %s" % data_type)
             # init empty list to store generated type/domain
             # data for instance list of names
             type_data = []
             # for specified data size
-            for _ in tqdm(range(self.data_size)):
+            for _ in range(self.data_size):
                 # use faker to generate fake dicts & append
                 if data_type == 'name':
                     type_data.append(faker.name())
@@ -85,11 +93,6 @@ class Generator:
                     )
                 elif data_type == 'profile':
                     type_data.append(faker.simple_profile())
-                else:
-                    # log
-                    logger.error("invalid type: %s" % data_type)
-                    # exit
-                    return
             # add type/domain data to all data dict
             self.all_data[data_type] = type_data
         # return generated data
@@ -175,11 +178,6 @@ class Generator:
                         )
                     # add all profiles to converted dict
                     self.converted_data_db[data_type] = profile_data
-                else:
-                    # log
-                    logger.error("invalid data type/domain: %s" % data_type)
-                    # exit
-                    return
             # return converted data
             return self.converted_data_db
         # convert to files
@@ -188,7 +186,6 @@ class Generator:
             for data_type in self.all_data:
                 # log
                 logger.info("converting type: %s" % data_type)
-                # if it is a list we won't have keys to use as column names
                 if isinstance(self.all_data[data_type][0], str):
                     # create df
                     df = pd.DataFrame(
@@ -200,11 +197,6 @@ class Generator:
                 # if it is a dict we use keys to use as column names
                 elif isinstance(self.all_data[data_type][0], dict):
                     df = pd.DataFrame.from_dict(self.all_data[data_type])
-                else:
-                    # log
-                    logger.error("invalid data type: %s" % data_type)
-                    # exit
-                    return
                 # add dataframe to converted data
                 self.converted_data_df[data_type] = df
             # return converted data

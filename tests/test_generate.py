@@ -1,3 +1,5 @@
+import pytest
+
 def test_generator_init():
     """
         test generator class init method
@@ -16,6 +18,17 @@ def test_generator_init():
     assert len(generator.converted_data_db) == 0
     assert len(generator.converted_data_df) == 0
 
+def test_generator_init_invalid():
+    """
+        test generator class init method with invalid parameter values
+    """
+    # import dependencies
+    from mock.generate import Generator
+    # assert value error is raised
+    with pytest.raises(ValueError):
+        # create generator
+        generator = Generator(data_size=10, data_types=["invalid"])
+    
 
 def test_generator_generate():
     """
