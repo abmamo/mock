@@ -39,10 +39,12 @@ to generate files
   # generate files with specific name
   # file_generator.store(file_name="<some file name to save each file type with>)
 ```
-### Logging
-by default logging level is set to `WARNING` to change this do
+## Logging
+By default logging level is set to `WARNING`. To see full logs
 ```
-  import logging
-  mock.logger.setLevel(logging.INFO)
+    import logging
+    # change default logging level
+    logging.getLogger('mock').setLevel(logging.DEBUG)
+    # before importing libs configure logger level
+    from mock import *
 ```
-before importing generator classes (SQLiteGenerator and FileGenerator)
