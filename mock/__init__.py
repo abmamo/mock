@@ -16,8 +16,6 @@ fileConfig(logging_config_path)
 logging.getLogger("faker.factory").setLevel(logging.WARNING)
 # create module logger
 logger = logging.getLogger('mock')
-# set default logging to WARNING
-logger.setLevel(logging.WARNING)
 ### data generation ###
 # generator
 from mock.generate import Generator
