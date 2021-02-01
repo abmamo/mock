@@ -27,14 +27,13 @@ setup(
           ]
       },
       install_requires=[
-          "Faker==4.14.2",
-          "sqlalchemy==1.3.20",
-          "pandas==1.1.4",
-          "pyarrow==2.0.0",
+          "Faker==5.8.0",
+          "sqlalchemy==1.3.22",
+          "pandas==1.1.5",
+          "pyarrow==3.0.0",
           "xlrd==2.0.1",
           "xlwt==1.3.0",
-          "openpyxl==3.0.5",
-          "pytest==6.2.1",
-          "pytest-cov==2.10.1"],
+          "pytest==6.2.2",
+          "pytest-cov==2.11.1"],
       zip_safe=False
 )
