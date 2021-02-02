@@ -21,11 +21,6 @@ setup(
       author_email='contact@abmamo.com',
       license='MIT',
       packages=find_packages(exclude=("tests", "env")),
-      package_data={
-          "mock": [
-            "logging.cfg"
-          ]
-      },
       install_requires=[
           "Faker==5.8.0",
           "sqlalchemy==1.3.22",
