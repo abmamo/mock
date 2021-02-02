@@ -4,18 +4,16 @@ import logging
 # os / path
 import os
 from os import path
-# config from .cfg file
-from logging.config import fileConfig
-# log dir (same as wherever this file is)
-log_dir = path.dirname(path.abspath(__file__))
-# get logging config path (same dir as this file)
-logging_config_path = path.join(log_dir, 'logging.cfg')
-# configure logging from file
-fileConfig(logging_config_path)
+# config from dict file
+from logging.config import dictConfig
+# config obj
+from mock.config import LOGGING_DICT as logging_cfg
+# configure logging from dict
+dictConfig(logging_cfg)
 # suppress logs from faker
 logging.getLogger("faker.factory").setLevel(logging.WARNING)
 # create module logger
-logger = logging.getLogger('mock')
+logger = logging.getLogger(__name__)
 ### data generation ###
 # generator
 from mock.generate import Generator
