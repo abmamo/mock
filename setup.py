@@ -22,12 +22,18 @@ setup(
       license='MIT',
       packages=find_packages(exclude=("tests", "env")),
       install_requires=[
+          # generation
           "Faker==5.8.0",
+          # db orm (sqlite)
           "sqlalchemy==1.3.22",
+          # data man.
           "pandas==1.1.5",
+          # parquet
           "pyarrow==3.0.0",
+          # excel
           "xlrd==2.0.1",
           "xlwt==1.3.0",
+          # testing
           "pytest==6.2.2",
           "pytest-cov==2.11.1"],
       zip_safe=False
