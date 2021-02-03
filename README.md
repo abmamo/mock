@@ -1,4 +1,4 @@
-# mock ![build](https://github.com/abmamo/mock/workflows/build/badge.svg?branch=main)
+# mock ![test](https://github.com/abmamo/mock/workflows/test/badge.svg?branch=main)
 
 package to generate real-world looking data. currently supports generating files & SQLite databases. supported filetypes are JSON, CSV, Parquet, and Excel. (needs python 3.7+)
 
