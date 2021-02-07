@@ -158,7 +158,7 @@ class Generator:
                 # create df
                 df = pd.DataFrame(
                     # get list of dicts all data
-                    generated_data,
+                    self.generated_data,
                     # specify data columns
                     columns=[self.data_type]
                 )
