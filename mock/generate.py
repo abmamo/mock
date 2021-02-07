@@ -120,12 +120,12 @@ class Generator:
                     self.converted_data_db.append(models.Job(job))
             elif self.data_type == "address":
                 # add all addresses
-                for address in self.all_data[data_type]:
+                for address in self.generated_data:
                     # create sqlalchemy object & append
                     self.converted_data_db.append(models.Address(address))
             elif self.data_type == "currency":
                 # add all currencies
-                for currency in self.all_data[data_type]:
+                for currency in self.generated_data:
                     # create sqlalchemy object & append
                     self.converted_data_db.append(
                         models.Currency(
