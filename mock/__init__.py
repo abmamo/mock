@@ -35,10 +35,10 @@ class SQLiteGenerator:
     """
     def __init__(
             self,
-            data_types=['name', 'job', 'address', 'currency', 'profile'],
+            data_type="profile",
             data_size=10000):
         # init data generator
-        self.generator = Generator(data_types=data_types, data_size=data_size)
+        self.generator = Generator(data_type=data_type, data_size=data_size)
 
     def store(self, data_dir=None, db_name="mock.db"):
         """
@@ -73,12 +73,8 @@ class SQLiteGenerator:
         self.generator.models.Base.metadata.create_all()
         # generate & convert data using generator
         data = self.generator.convert(to="db")
-        # save each table generated for each data type/domain
-        for data_type in self.generator.data_types:
-            # get data type / domain
-            type_data = data[data_type]
-            # bulk insert into db
-            session.bulk_save_objects(type_data)
+        # bulk insert into db
+        session.bulk_save_objects(data)
 
 
 class FileGenerator:
@@ -95,26 +91,29 @@ class FileGenerator:
     def __init__(
             self,
             # data types / domains
-            data_types=['name', 'job', 'address', 'currency', 'profile'],
+            data_type="profile",
             # size of data generated
-            data_size=10000,
+            data_size=1000,
             # file types to generate
-            file_types=None):
+            file_type="csv"):
         # supported file types
         self.supported_file_types = ["csv", "json", "parquet", "xls"]
-        # if file types is not set use default
-        if file_types is None:
-            file_types = self.supported_file_types
-        # check file types are valid
-        if not all(file_type in self.supported_file_types for file_type in file_types):
+        # supported data types
+        self.supported_data_types = ['name', 'job', 'address', 'currency', 'profile']
+        # check file type is supported
+        if file_type not in self.supported_file_types:
             # raise error
-            raise ValueError("invalid value: file_types. mock only supports: %s" % str(self.supported_file_types))
-        # file types are all valid
-        else:
-            # file types to generate
-            self.file_types = file_types
-            # init data generator
-            self.generator = Generator(data_types=data_types, data_size=data_size)
+            raise ValueError("invalid file_type: %s. mock supports: %s" % (str(file_type), str(self.supported_file_types)))
+        # check data type is supported
+        if data_type not in self.supported_data_types:
+            # raise error
+            raise ValueError("invalid data_type: %s. mock supports: %s" % (str(file_type), str(self.supported_data_types)))
+        # data type
+        self.data_type = data_type
+        # file type
+        self.file_type = file_type
+        # init data generator
+        self.generator = Generator(data_type=data_type, data_size=data_size)
         
 
     def store(self, data_dir_name="data", data_dir=None, file_name=None):
@@ -142,37 +141,32 @@ class FileGenerator:
             data_dir = data_dir
         # converted generated data to form (dict of type [string]list
         # where list is list of dfs for each data type specified)
-        data = self.generator.convert(to="f")
-        # save each df generated
-        for data_type in self.generator.data_types:
-            # log
-            logger.info("storing type/domain: %s" % data_type)
-            # for each file type specified
-            for file_type in self.file_types:
-                # get df from generated data for particular type
-                df = data[data_type]
-                # if file name specified
-                if file_name is not None:
-                    # generate file path using specified file name + data dir + file type
-                    filename = os.path.join(data_dir, file_name + "." + file_type)
-                else:
-                    # generate file path using specified data dir + default file names + file type
-                    filename = os.path.join(data_dir, data_type + "." + file_type)
-                # log
-                logger.info("storing to: %s" % filename)
-                # csv
-                if file_type == "csv":
-                    # save df to csv
-                    df.to_csv(filename)
-                # json
-                elif file_type == "json":
-                    # save df to json
-                    df.to_json(filename)
-                # parquet
-                elif file_type == "parquet":
-                    # save df to parquet
-                    df.to_parquet(filename)
-                # excel
-                elif file_type == "xls":
-                    # save df to excel
-                    df.to_excel(filename)
+        df = self.generator.convert(to="f")
+        # log
+        logger.info("storing data type: %s" % self.data_type)
+        # if file name specified
+        if file_name is not None:
+            # generate file path using specified file name + data dir + file type
+            filename = os.path.join(data_dir, file_name + "." + self.file_type)
+        else:
+            # generate file path using specified data dir + default file names + file type
+            filename = os.path.join(data_dir, self.data_type + "." + self.file_type)
+        # log
+        logger.info("storing to: %s" % filename)
+        # csv
+        if self.file_type == "csv":
+            # save df to csv
+            df.to_csv(filename)
+        # json
+        elif self.file_type == "json":
+            # save df to json
+            df.to_json(filename)
+        # parquet
+        elif self.file_type == "parquet":
+            # save df to parquet
+            df.to_parquet(filename)
+        # excel
+        elif self.file_type == "xls":
+            # save df to excel
+            df.to_excel(filename)
+    

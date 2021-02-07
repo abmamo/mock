@@ -1,5 +1,7 @@
+# testing
 import pytest
-
+# path
+import pathlib
 
 @pytest.fixture()
 def test_data_dir():
@@ -53,22 +55,32 @@ def test_sqlite_with_name(test_data_dir):
     # assert
     assert test_data_dir.joinpath("test.db").exists()
 
-def test_files_invalid_type():
+def test_files_invalid_file_type():
     """
         test files data generator with invalid file types
     """
     # import generator
     from mock import FileGenerator
-    # invalid init params
-    file_types = ["csv", "json", "xls", "parquet", "zoomy"]
-    data_types = ["name", "job", "profile", "currency", "address"]
     # assert value error is raised
     with pytest.raises(ValueError):
         # init file generator
         file_generator = FileGenerator(
             data_size=10,
-            file_types=file_types,
-            data_types=data_types
+            file_type="invalid"
+        )
+
+def test_files_invalid_data_type():
+    """
+        test files data generator with invalid file types
+    """
+    # import generator
+    from mock import FileGenerator
+    # assert value error is raised
+    with pytest.raises(ValueError):
+        # init file generator
+        file_generator = FileGenerator(
+            data_size=10,
+            data_type="invalid"
         )
 
 
@@ -79,46 +91,31 @@ def test_files_default(test_data_dir):
     # import generator
     from mock import FileGenerator
     # init params
-    data_types = ["name", "job", "profile", "currency", "address"]
+    data_types = ["profile"]
+    file_types = ["csv"]
     # init file generator
     file_generator = FileGenerator(
-        data_size=10,
-        data_types=data_types
+        data_size=1
     )
     # store data to dir
     file_generator.store(data_dir=test_data_dir)
-    # get expected files using init params
-    import itertools
-    expected_files = [data_type + "." + file_type for data_type, file_type in itertools.product(data_types, file_generator.file_types)]
-    # for each expected file name
-    for expected_file in expected_files:
-        # assert file exists
-        assert test_data_dir.joinpath(expected_file).exists()
+    # assert file generated
+    assert test_data_dir.joinpath(file_generator.data_type + "." + file_generator.file_type).exists()
 
-def test_files_with_names(test_data_dir):
+def test_files_with_name(test_data_dir):
     """
         test files data generator with file names specified
     """
     # import generator
     from mock import FileGenerator
-    # init params
-    file_types = ["csv", "json", "xls", "parquet"]
-    data_types = ["name", "job", "profile", "currency", "address"]
     # init file generator
     file_generator = FileGenerator(
-        data_size=10,
-        file_types=file_types,
-        data_types=data_types
+        data_size=10
     )
     # store data to dir
     file_generator.store(data_dir=test_data_dir, file_name="random_name")
-    # get expected files using init params
-    import itertools
-    expected_files = ["random_name." + file_type for file_type in file_types]
-    # for each expected file name
-    for expected_file in expected_files:
-        # assert file exists
-        assert test_data_dir.joinpath(expected_file).exists()
+    # assert file generated
+    assert test_data_dir.joinpath("random_name." + file_generator.file_type).exists()
 
 
 def test_files_without_dir_name():
@@ -127,26 +124,14 @@ def test_files_without_dir_name():
     """
     # import generator
     from mock import FileGenerator
-    # init params
-    file_types = ["csv", "json", "xls", "parquet"]
-    data_types = ["name", "job", "profile", "currency", "address"]
     # init file generator
     file_generator = FileGenerator(
-        data_size=10,
-        file_types=file_types,
-        data_types=data_types,
+        data_size=10
     )
     # store data to dir
     file_generator.store(data_dir_name="nonexist", file_name="random_name")
-    # get expected files using init params
-    import itertools
-    expected_files = ["random_name." + file_type for file_type in file_types]
-    # path
-    import pathlib
-    # for each expected file name
-    for expected_file in expected_files:
-        # assert file exists
-        assert pathlib.Path.cwd().joinpath("nonexist").joinpath(expected_file).exists()
+    # assert file generated
+    assert pathlib.Path.cwd().joinpath("nonexist").joinpath("random_name." + file_generator.file_type).exists()
     # rm test folders
     import shutil
     shutil.rmtree(pathlib.Path.cwd().joinpath("nonexist"))

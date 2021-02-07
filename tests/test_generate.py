@@ -14,9 +14,9 @@ def test_generator_init():
     assert generator.models is not None
     # assert generated & converted data initially
     # are empty
-    assert len(generator.all_data) == 0
+    assert len(generator.generated_data) == 0
     assert len(generator.converted_data_db) == 0
-    assert len(generator.converted_data_df) == 0
+    assert generator.converted_data_df is None
 
 def test_generator_init_invalid():
     """
@@ -27,7 +27,12 @@ def test_generator_init_invalid():
     # assert value error is raised
     with pytest.raises(ValueError):
         # create generator
-        generator = Generator(data_size=10, data_types=["invalid"])
+        generator = Generator(
+            # size of data generated
+            data_size=10,
+            # invalid data type
+            data_type="invalid"
+        )
     
 
 def test_generator_generate():
@@ -44,9 +49,9 @@ def test_generator_generate():
     assert generator.models is not None
     # assert generated & converted data initially
     # are empty
-    assert len(generator.all_data) == 0
+    assert len(generator.generated_data) == 0
     assert len(generator.converted_data_db) == 0
-    assert len(generator.converted_data_df) == 0
+    assert generator.converted_data_df is None
     # run generate method
     generator.generate()
     # assert generator type
@@ -54,11 +59,12 @@ def test_generator_generate():
     # assert generator db models exist
     assert generator.models is not None
     # assert generated data is not empty
-    assert len(generator.all_data) != 0
+    assert len(generator.generated_data) != 0
+    assert len(generator.generated_data) == 10
     # assert converted data is empty w/o calling
     # convert method
     assert len(generator.converted_data_db) == 0
-    assert len(generator.converted_data_df) == 0
+    assert generator.converted_data_df is None
 
 
 def test_generator_convert():
@@ -75,9 +81,9 @@ def test_generator_convert():
     assert generator.models is not None
     # assert generated & converted data initially
     # are empty
-    assert len(generator.all_data) == 0
+    assert len(generator.generated_data) == 0
     assert len(generator.converted_data_db) == 0
-    assert len(generator.converted_data_df) == 0
+    assert generator.converted_data_df is None
     # run generate
     generator.generate()
     # assert
@@ -85,10 +91,10 @@ def test_generator_convert():
     # assert generator db models exist
     assert generator.models is not None
     # assert generated data is not empty
-    assert len(generator.all_data) != 0
+    assert len(generator.generated_data) != 0
     # assert converted data is empty
     assert len(generator.converted_data_db) == 0
-    assert len(generator.converted_data_df) == 0
+    assert generator.converted_data_df is None
     # run convert
     generator.convert(to="db")
     # assert
@@ -96,9 +102,9 @@ def test_generator_convert():
     # assert generator db models exist
     assert generator.models is not None
     # assert db conversion worked
-    assert len(generator.all_data) != 0
+    assert len(generator.generated_data) != 0
     assert len(generator.converted_data_db) != 0
-    assert len(generator.converted_data_df) == 0
+    assert generator.converted_data_df is None
     # run convert
     generator.convert(to="f")
     # assert
@@ -106,6 +112,6 @@ def test_generator_convert():
     # assert generator db models exist
     assert generator.models is not None
     # assert file conversion worked
-    assert len(generator.all_data) != 0
+    assert len(generator.generated_data) != 0
     assert len(generator.converted_data_db) != 0
-    assert len(generator.converted_data_df) != 0
+    assert generator.converted_data_df is not None
