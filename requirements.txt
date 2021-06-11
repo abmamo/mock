@@ -12,3 +12,7 @@ xlrd==2.0.1
 # testing
 pytest==6.2.2
 pytest-cov==2.11.1
+# linting
+pylint==2.8.3
+black==21.6b0
+flake8==3.9.2

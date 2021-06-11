@@ -1,48 +1,58 @@
-# module logger
-from mock import logger
+"""
+    generate.py: contains data generation classes
+"""
+# logging
+import logging
+
 # faker (data generation)
 from faker import Faker
+
 # pandas (data handling)
 import pandas as pd
+
 # db models (for SQLite)
 import mock.models as models
-# sys
-import sys
+
+# init logger
+logger = logging.getLogger(__name__)
+
 # init faker
 faker = Faker()
 
 
 class Generator:
     """
-        use faker to generate real-looking random data.
-        the generated data can be: names, jobs, address,
-        currencies, and profiles. the generated data can
-        be a list of SQLAlchemy object (to store in a db
-        currently supports SQLite) or a list of dataframes
-        (to store to a file)
+    use faker to generate real-looking random data.
+    the generated data can be: names, jobs, address,
+    currencies, and profiles. the generated data can
+    be a list of SQLAlchemy object (to store in a db
+    currently supports SQLite) or a list of dataframes
+    (to store to a file)
+    """
 
+    def __init__(self, data_type="profile", data_size=1000):
+        """
         init params:
             - types: list of data types / domains
-                     (limited to name, job, address, currency, profile)
+                    (limited to name, job, address, currency, profile)
             - data_size: size of data generated
-    """
-    def __init__(
-            self,
-            data_type="profile",
-            data_size=1000):
+        """
         # supported data types
-        self.supported_data_types = ['name', 'job', 'address', 'currency', 'profile']
+        self.supported_data_types = ["name", "job", "address", "currency", "profile"]
         # check data type is supported
         if data_type not in self.supported_data_types:
             # raise error
-            raise ValueError("invalid data_type: %s. mock supports: %s" % (str(data_type), str(self.supported_data_types)))
+            raise ValueError(
+                "invalid data_type: %s. mock supports: %s"
+                % (str(data_type), str(self.supported_data_types))
+            )
         # data types/domains
         self.data_type = data_type
         # size of data generated
         self.data_size = data_size
         # list of generated dicts
         self.generated_data = []
-        # save generated data as list of 
+        # save generated data as list of
         # db objects
         self.converted_data_db = []
         # save generated data as list of
@@ -53,59 +63,57 @@ class Generator:
 
     def generate(self):
         """
-            generate fake/mock data
+        generate fake/mock data
 
-            params:
-                - nothing
-            returns:
-                - generated_data: list containing all generated data
+        params:
+            - nothing
+        returns:
+            - generated_data: list containing all generated data
         """
         # log
-        logger.info("generating data type: %s" % self.data_type)
+        logger.info("generating data type: %s", self.data_type)
         # for specified data size
         for _ in range(self.data_size):
             # use faker to generate fake dicts & append
-            if self.data_type == 'name':
+            if self.data_type == "name":
                 # generate name dict
                 self.generated_data.append(faker.name())
-            elif self.data_type == 'job':
+            elif self.data_type == "job":
                 # generate job dict
                 self.generated_data.append(faker.job())
-            elif self.data_type == 'address':
+            elif self.data_type == "address":
                 # generate address dict
                 self.generated_data.append(faker.address())
-            elif self.data_type == 'currency':
+            elif self.data_type == "currency":
                 # generate currency tuple
                 currency = faker.currency()
                 # convert to dict & append
-                self.generated_data.append(
-                    {'symbol': currency[0], 'name': currency[1]}
-                )
-            elif self.data_type == 'profile':
+                self.generated_data.append({"symbol": currency[0], "name": currency[1]})
+            elif self.data_type == "profile":
                 # generate profile dict
                 self.generated_data.append(faker.simple_profile())
         # return generated data (list of dicts)
         return self.generated_data
 
-    def convert(self, to="f"):
+    def convert(self, convert_to="f"):  # pylint: disable=too-many-branches
         """
-            convert generated data to appropriate format
+        convert generated data to appropriate format
 
-            params:
-                - to: destination (can be "db" or "f")
-                    * db - to SQLite
-                    * f - to file
-            returns:
-                - converted data
+        params:
+            - convert_to: destination (can be "db" or "f")
+                * db - to SQLite
+                * f - to file
+        returns:
+            - converted data
         """
         # if data has not been generated
         if len(self.generated_data) == 0:
             # generate data
             self.generate()
         # convert to db objects
-        if to == "db":
+        if convert_to == "db":
             # log
-            logger.info("converting type: %s" % self.data_type)
+            logger.info("converting type: %s", self.data_type)
             # generate sqlalchemy objects using
             # schema defined in models.py
             if self.data_type == "name":
@@ -129,8 +137,7 @@ class Generator:
                     # create sqlalchemy object & append
                     self.converted_data_db.append(
                         models.Currency(
-                            symbol=currency["symbol"],
-                            name=currency["name"]
+                            symbol=currency["symbol"], name=currency["name"]
                         )
                     )
             elif self.data_type == "profile":
@@ -144,29 +151,30 @@ class Generator:
                             sex=profile["sex"],
                             address=profile["address"],
                             mail=profile["mail"],
-                            birthdate=profile["birthdate"]
+                            birthdate=profile["birthdate"],
                         )
                     )
             # return converted data
             return self.converted_data_db
         # convert to files
-        elif to == "f":
-            # log
-            logger.info("converting type: %s" % self.data_type)
-            # if it is a string (just one column found)
-            if isinstance(self.generated_data[0], str):
-                # create df
-                df = pd.DataFrame(
-                    # get list of dicts all data
-                    self.generated_data,
-                    # specify data columns
-                    columns=[self.data_type]
-                )
-            # if it is a dict we use keys to use as column names
-            elif isinstance(self.generated_data[0], dict):
-                # create df
-                df = pd.DataFrame.from_dict(self.generated_data)
-            # add dataframe to converted data
-            self.converted_data_df = df
-            # return converted data
-            return self.converted_data_df
+        # log
+        logger.info("converting type: %s", self.data_type)
+        # if it is a string (just one column found)
+        if isinstance(self.generated_data[0], str):
+            # create df
+            df = pd.DataFrame(  # pylint: disable=invalid-name
+                # get list of dicts all data
+                self.generated_data,
+                # specify data columns
+                columns=[self.data_type],
+            )
+        # if it is a dict we use keys to use as column names
+        elif isinstance(self.generated_data[0], dict):
+            # create df
+            df = pd.DataFrame.from_dict( # pylint: disable=invalid-name
+                self.generated_data
+            )
+        # add dataframe to converted data
+        self.converted_data_df = df
+        # return converted data
+        return self.converted_data_df
