@@ -30,7 +30,7 @@ setup(
         # data man.
         "pandas==1.2.4",
         # parquet
-        "pyarrow==3.0.0",
+        "pyarrow==4.0.1",
         # excel
         "xlrd==2.0.1",
         "xlwt==1.3.0",
