@@ -26,7 +26,7 @@ setup(
         # data generation
         "Faker==8.8.1",
         # db orm
-        "sqlalchemy==1.4.18",
+        "sqlalchemy==1.4.19",
         # data processing
         "pandas==1.2.5",
         # parquet
