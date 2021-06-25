@@ -171,7 +171,7 @@ class Generator:
         # if it is a dict we use keys to use as column names
         elif isinstance(self.generated_data[0], dict):
             # create df
-            df = pd.DataFrame.from_dict( # pylint: disable=invalid-name
+            df = pd.DataFrame.from_dict(  # pylint: disable=invalid-name
                 self.generated_data
             )
         # add dataframe to converted data

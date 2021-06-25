@@ -23,7 +23,7 @@ def test_data_dir():
     # get the current file's directory
     current_path = pathlib.Path(__file__).parent.absolute()
     # create dir path
-    test_data_dir = current_path.joinpath( # pylint: disable=redefined-outer-name
+    test_data_dir = current_path.joinpath(  # pylint: disable=redefined-outer-name
         "data"
     )
     # create dir
