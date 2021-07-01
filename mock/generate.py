@@ -11,7 +11,7 @@ from faker import Faker
 import pandas as pd
 
 # db models (for SQLite)
-import mock.models as models
+from mock import models
 
 # init logger
 logger = logging.getLogger(__name__)
