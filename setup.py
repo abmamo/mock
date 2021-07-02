@@ -28,7 +28,7 @@ setup(
         # db orm
         "sqlalchemy==1.4.20",
         # data processing
-        "pandas==1.2.5",
+        "pandas==1.3.0",
         # parquet
         "pyarrow==4.0.1",
         # excel
