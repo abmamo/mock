@@ -24,7 +24,7 @@ setup(
     packages=find_packages(exclude=("tests", "env")),
     install_requires=[
         # data generation
-        "Faker==8.10.0",
+        "Faker==8.10.1",
         # db orm
         "sqlalchemy==1.4.20",
         # data processing
